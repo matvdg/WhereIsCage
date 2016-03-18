@@ -17,10 +17,10 @@ class FindCageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.canvas.image = image
-        self.canvas.frame = CGRectMake(0, 0, self.image.size.width, self.image.size.height)
+        self.initCanvas()
+        self.canvas.backgroundColor = UIColor.redColor()
         self.view.backgroundColor = UIColor.blackColor()
         self.canvas.contentMode = UIViewContentMode.ScaleAspectFit
-        self.canvas.frame = self.view.frame
         self.canvas.userInteractionEnabled = true
         self.view.addSubview(self.canvas)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotated", name: UIDeviceOrientationDidChangeNotification, object: nil)
@@ -34,7 +34,7 @@ class FindCageViewController: UIViewController {
     }
     
     @IBAction func find(sender: UITapGestureRecognizer) {
-        var selectedPoint = sender.locationInView(self.canvas)
+        let selectedPoint = sender.locationInView(self.canvas)
         print("width = \(self.canvas.frame.width) & height= \(self.canvas.frame.height)")
         print(selectedPoint)    }
 
@@ -45,7 +45,7 @@ class FindCageViewController: UIViewController {
     }
     
     @IBAction func reset(sender: UITapGestureRecognizer) {
-        self.reset()
+        self.initCanvas()
     }
     
     func rotated(){
@@ -53,7 +53,7 @@ class FindCageViewController: UIViewController {
         {
             if self.portrait {
                 self.portrait = false
-                self.reset()
+                self.initCanvas()
             }
             
         }
@@ -61,14 +61,28 @@ class FindCageViewController: UIViewController {
         {
             if !self.portrait {
                 self.portrait = true
-                self.reset()
+                self.initCanvas()
                 
             }
         }
     }
     
-    private func reset() {
-        self.canvas.frame = CGRectMake(0, 0, self.image.size.width, self.image.size.height)
+    private func initCanvas() {
+        let width = self.image.size.width
+        let height = self.image.size.height
+        
+        if width > height {
+            let ratio = width / self.view.frame.width
+            let computedHeight = self.image.size.height / ratio
+            let computedY = self.view.frame.height / 2 - computedHeight / 2
+            self.canvas.frame = CGRectMake(0, computedY, self.view.frame.width, computedHeight)
+        } else {
+            let ratio = height / self.view.frame.height
+            let computedWidth = self.image.size.width / ratio
+            let computedX = self.view.frame.width / 2 - computedWidth / 2
+            self.canvas.frame = CGRectMake(computedX, 0, computedWidth, self.view.frame.height)
+        }
+        
     }
 
 }
