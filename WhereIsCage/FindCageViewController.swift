@@ -17,8 +17,7 @@ class FindCageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.canvas.image = image
-        
-        self.canvas.frame = self.view.frame
+        self.canvas.frame = CGRectMake(0, 0, self.image.size.width, self.image.size.height)
         self.view.backgroundColor = UIColor.blackColor()
         self.canvas.contentMode = UIViewContentMode.ScaleAspectFit
         self.canvas.frame = self.view.frame
@@ -28,25 +27,16 @@ class FindCageViewController: UIViewController {
 
     }
 
+    //gestures methods
     @IBAction func zoom(sender: UIPinchGestureRecognizer) {
         self.canvas.transform = CGAffineTransformScale(self.canvas.transform, sender.scale, sender.scale)
         sender.scale = 1
     }
     
-    @IBAction func findCage(sender: UILongPressGestureRecognizer) {
-        
-    }
-    
     @IBAction func find(sender: UITapGestureRecognizer) {
         var selectedPoint = sender.locationInView(self.canvas)
         print("width = \(self.canvas.frame.width) & height= \(self.canvas.frame.height)")
-        print(selectedPoint)
-        selectedPoint.x = selectedPoint.x / self.canvas.frame.width * 100
-        selectedPoint.y = selectedPoint.y / self.canvas.frame.height * 100
-        print(selectedPoint)
-    }
-    
-   
+        print(selectedPoint)    }
 
     @IBAction func move(sender: UIPanGestureRecognizer) {
         let translation = sender.translationInView(sender.view)
@@ -78,7 +68,7 @@ class FindCageViewController: UIViewController {
     }
     
     private func reset() {
-        self.canvas.frame = self.view.frame
+        self.canvas.frame = CGRectMake(0, 0, self.image.size.width, self.image.size.height)
     }
 
 }
