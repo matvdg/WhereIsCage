@@ -20,8 +20,8 @@ class FindCageViewController: UIViewController {
         
         self.canvas.frame = self.view.frame
         self.view.backgroundColor = UIColor.blackColor()
-        self.canvas.contentMode = UI
-        self.canvas.frame = CGRectMake(0, 0, self.image.size.width, self.image.size.height)
+        self.canvas.contentMode = UIViewContentMode.ScaleAspectFit
+        self.canvas.frame = self.view.frame
         self.canvas.userInteractionEnabled = true
         self.view.addSubview(self.canvas)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotated", name: UIDeviceOrientationDidChangeNotification, object: nil)
